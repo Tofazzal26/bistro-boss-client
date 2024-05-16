@@ -4,7 +4,7 @@ import "./FeatureMenu.css";
 
 const FeatureMenu = () => {
   return (
-    <div className="feature-content mb-12">
+    <div className="feature-content bg-fixed mb-12">
       <div className="lg:py-20 px-6 py-4 lg:px-36">
         <div className="space-y-12">
           <div>
