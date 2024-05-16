@@ -1,5 +1,8 @@
 import Banner from "../../Components/Banner/Banner";
+import CallUs from "../../Components/CallUs/CallUs";
 import Category from "../../Components/Category/Category";
+import ChefRecommend from "../../Components/ChefRecommend/ChefRecommend";
+import FeatureMenu from "../../Components/FeatureMenu/FeatureMenu";
 import OurMenu from "../../Components/OurMenu/OurMenu";
 
 const Home = () => {
@@ -8,6 +11,9 @@ const Home = () => {
       <Banner />
       <Category />
       <OurMenu />
+      <CallUs />
+      <ChefRecommend />
+      <FeatureMenu />
     </div>
   );
 };
