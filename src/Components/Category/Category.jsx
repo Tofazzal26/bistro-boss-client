@@ -9,19 +9,16 @@ import Slide2 from "../../../public/home/slide2.jpg";
 import Slide3 from "../../../public/home/slide3.jpg";
 import Slide4 from "../../../public/home/slide4.jpg";
 import Slide5 from "../../../public/home/slide5.jpg";
+import SectionTitle from "../../Shared/SectionTitle/SectionTitle";
 
 const Category = () => {
   return (
     <div>
-      <div className="text-center">
-        <p className="text-[#D99904] text-[20px] font-semibold">
-          ---From 11:00am to 10:00pm---
-        </p>
-        <div className="divider lg:px-[500px]"></div>
-        <h1 className="text-[40px]">ORDER ONLINE</h1>
-        <div className="divider lg:px-[500px]"></div>
-      </div>
-      <div className="">
+      <SectionTitle
+        subHeader={"ORDER ONLINE"}
+        paraHeader={"From 11:00am to 10:00pm"}
+      />
+      <div>
         <Swiper
           slidesPerView={4}
           spaceBetween={20}
