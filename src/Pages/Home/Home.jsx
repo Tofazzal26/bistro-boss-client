@@ -4,6 +4,7 @@ import Category from "../../Components/Category/Category";
 import ChefRecommend from "../../Components/ChefRecommend/ChefRecommend";
 import FeatureMenu from "../../Components/FeatureMenu/FeatureMenu";
 import OurMenu from "../../Components/OurMenu/OurMenu";
+import Testimonials from "../../Components/Testimonials/Testimonials";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       <CallUs />
       <ChefRecommend />
       <FeatureMenu />
+      <Testimonials />
     </div>
   );
 };
