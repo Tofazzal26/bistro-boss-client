@@ -1,11 +1,58 @@
+import { NavLink } from "react-router-dom";
+
 const NavBar = () => {
   const navLinks = (
     <>
-      <li>Home</li>
-      <li>Contact Us</li>
-      <li>Dashboard</li>
-      <li>Our Menu</li>
-      <li>Our Shop</li>
+      <li className="">
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "text-[#EEFF25]" : "text-white"
+          }
+          to="/"
+        >
+          Home
+        </NavLink>
+      </li>
+      <li className="">
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            isActive ? "text-[#EEFF25]" : "text-white"
+          }
+        >
+          Contact Us
+        </NavLink>
+      </li>
+      <li className="">
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            isActive ? "text-[#EEFF25]" : "text-white"
+          }
+        >
+          Dashboard
+        </NavLink>
+      </li>
+      <li className="">
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "text-[#EEFF25]" : "text-white"
+          }
+          to="/ourMenu"
+        >
+          Our Menu
+        </NavLink>
+      </li>
+      <li className="">
+        <NavLink
+          to="/ourShop"
+          className={({ isActive }) =>
+            isActive ? "text-[#EEFF25]" : "text-white"
+          }
+        >
+          Our Shop
+        </NavLink>
+      </li>
     </>
   );
 
@@ -32,7 +79,7 @@ const NavBar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2  shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52"
             >
               {navLinks}
             </ul>
@@ -40,7 +87,7 @@ const NavBar = () => {
           <a className="btn btn-ghost text-xl">Bistro Boss</a>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 font-semibold text-lg space-x-4">
+          <ul className="menu menu-horizontal px-1 font-semibold text-lg  space-x-4">
             {navLinks}
           </ul>
         </div>
