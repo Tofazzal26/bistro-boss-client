@@ -29,6 +29,11 @@ const BannerCover = ({ img, head, title }) => {
           </div>
         </div>
       </Parallax>
+      <div className="my-12 text-center">
+        <button className="font-semibold bg-red-500 text-black px-6 py-3 rounded-md border-b-2 border-black">
+          ORDER YOUR FAVOURITE FOOD
+        </button>
+      </div>
     </div>
   );
 };

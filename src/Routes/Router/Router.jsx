@@ -3,6 +3,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "../../Pages/Root/Root";
 import Home from "../../Pages/Home/Home";
 import Menu from "../../Pages/Menu/Menu";
+import OurShop from "../../Pages/OurShop/OurShop";
+import Login from "../../Pages/Login/Login";
 
 const Router = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ const Router = createBrowserRouter([
       {
         path: "/ourMenu",
         element: <Menu />,
+      },
+      {
+        path: "/ourShop/:category",
+        element: <OurShop />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },
