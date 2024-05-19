@@ -7,6 +7,8 @@ import ChefRecommend from "../../Components/ChefRecommend/ChefRecommend";
 import FeatureMenu from "../../Components/FeatureMenu/FeatureMenu";
 import OurMenu from "../../Components/OurMenu/OurMenu";
 import Testimonials from "../../Components/Testimonials/Testimonials";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
+import { useContext } from "react";
 
 const Home = () => {
   return (

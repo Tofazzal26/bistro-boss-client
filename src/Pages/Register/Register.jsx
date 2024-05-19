@@ -1,54 +1,37 @@
-import "./Login.css";
-import loginImg from "../../../public/others/authentication2.png";
-import {
-  loadCaptchaEnginge,
-  LoadCanvasTemplate,
-  LoadCanvasTemplateNoReload,
-  validateCaptcha,
-} from "react-simple-captcha";
-import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
+import "./Register.css";
+import registerImg from "../../../public/others/authentication2.png";
 
-const Login = () => {
-  const captchaValue = useRef();
-  const [disable, setDisable] = useState(true);
-
-  useEffect(() => {
-    loadCaptchaEnginge(6);
-  }, []);
-
-  const handleCaptchaMatch = () => {
-    const user_captcha_value = captchaValue.current.value;
-    if (validateCaptcha(user_captcha_value)) {
-      setDisable(false);
-    } else {
-      setDisable(true);
-    }
-  };
-
-  const handleLogin = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    console.log(email, password);
-  };
+const Register = () => {
+  const handleRegister = (event) => {};
 
   return (
-    <div className="contentImg">
+    <div className="registerImg">
       <div className="lg:px-[100px] lg:py-[100px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 justify-center items-center">
-          <div>
-            <img src={loginImg} alt="" />
-          </div>
           <div className="w-full p-8 space-y-3 rounded-xl">
             <h1 className="text-3xl font-bold text-center">Login</h1>
             <form
-              onSubmit={handleLogin}
+              onSubmit={handleRegister}
               noValidate=""
               action=""
               className="space-y-6"
             >
+              <div className="space-y-2 text-sm">
+                <label
+                  htmlFor="username"
+                  className="block text-black font-semibold text-base"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Username"
+                  className="w-full px-4 py-3 font-semibold text-sm rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                />
+              </div>
               <div className="space-y-2 text-sm">
                 <label
                   htmlFor="username"
@@ -60,7 +43,7 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="username"
-                  placeholder="Username"
+                  placeholder="Email"
                   className="w-full px-4 py-3 font-semibold text-sm rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
               </div>
@@ -80,33 +63,9 @@ const Login = () => {
                   className="w-full px-4 font-semibold text-sm py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
               </div>
-              <div className="space-y-2 text-sm">
-                <label
-                  htmlFor="password"
-                  className="block text-black font-semibold text-base"
-                >
-                  <LoadCanvasTemplate />
-                </label>
-                <input
-                  type="text"
-                  name="captcha"
-                  id="captcha"
-                  ref={captchaValue}
-                  placeholder="Type Captcha"
-                  className="w-full px-4 font-semibold text-sm py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
-                />
-                <button
-                  onClick={handleCaptchaMatch}
-                  className="p-3 font-semibold text-white text-center rounded-sm bg-[#D1A054]"
-                >
-                  Match Captcha
-                </button>
-              </div>
+
               <button
-                disabled={disable}
-                className={`block w-full p-3 font-semibold text-white text-center rounded-sm ${
-                  disable ? "bg-gray-500" : " bg-[#D1A054]"
-                }`}
+                className={`block w-full p-3 font-semibold text-white text-center rounded-sm bg-[#D1A054]`}
               >
                 Sign in
               </button>
@@ -157,11 +116,16 @@ const Login = () => {
               </button>
             </div>
             <p className="text-base text-center sm:px-6 dark:text-gray-600 font-semibold">
-              Don't have an account?{" "}
-              <NavLink to={`/register`}>
-                <span className="text-[#d1a054] cursor-pointer">Sign up</span>
+              Already registered?{" "}
+              <NavLink to={`/login`}>
+                <span className="text-[#d1a054] cursor-pointer">
+                  Go to log in
+                </span>
               </NavLink>
             </p>
+          </div>
+          <div>
+            <img src={registerImg} alt="" />
           </div>
         </div>
       </div>
@@ -169,4 +133,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

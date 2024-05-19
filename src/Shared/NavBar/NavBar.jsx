@@ -63,6 +63,16 @@ const NavBar = () => {
           Login
         </NavLink>
       </li>
+      <li className="">
+        <NavLink
+          to="/register"
+          className={({ isActive }) =>
+            isActive ? "text-[#EEFF25]" : "text-white"
+          }
+        >
+          Sign Up
+        </NavLink>
+      </li>
     </>
   );
 
