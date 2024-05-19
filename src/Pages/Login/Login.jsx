@@ -6,19 +6,27 @@ import {
   LoadCanvasTemplateNoReload,
   validateCaptcha,
 } from "react-simple-captcha";
-import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const captchaValue = useRef();
+  const { logInEmailPassword, setNotLoading } = useContext(AuthContext);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [disable, setDisable] = useState(true);
 
   useEffect(() => {
     loadCaptchaEnginge(6);
   }, []);
 
-  const handleCaptchaMatch = () => {
-    const user_captcha_value = captchaValue.current.value;
+  const handleCaptchaMatch = (e) => {
+    const user_captcha_value = e.target.captcha.value;
+    console.log(user_captcha_value);
     if (validateCaptcha(user_captcha_value)) {
       setDisable(false);
     } else {
@@ -26,12 +34,25 @@ const Login = () => {
     }
   };
 
-  const handleLogin = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    console.log(email, password);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    const email = data.email;
+    const password = data.password;
+
+    logInEmailPassword(email, password)
+      .then((result) => {
+        toast.success("Login Successfully");
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        toast.error("Please enter a valid email & password");
+      });
   };
 
   return (
@@ -44,7 +65,7 @@ const Login = () => {
           <div className="w-full p-8 space-y-3 rounded-xl">
             <h1 className="text-3xl font-bold text-center">Login</h1>
             <form
-              onSubmit={handleLogin}
+              onSubmit={handleSubmit(onSubmit)}
               noValidate=""
               action=""
               className="space-y-6"
@@ -61,8 +82,12 @@ const Login = () => {
                   name="email"
                   id="username"
                   placeholder="Username"
+                  {...register("email", { required: true })}
                   className="w-full px-4 py-3 font-semibold text-sm rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
+                {errors.email && (
+                  <span className="text-red-500">This field is required</span>
+                )}
               </div>
 
               <div className="space-y-2 text-sm">
@@ -77,8 +102,12 @@ const Login = () => {
                   name="password"
                   id="password"
                   placeholder="Password"
+                  {...register("password", { required: true })}
                   className="w-full px-4 font-semibold text-sm py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
+                {errors.password && (
+                  <span className="text-red-500">This field is required</span>
+                )}
               </div>
               <div className="space-y-2 text-sm">
                 <label
@@ -91,25 +120,19 @@ const Login = () => {
                   type="text"
                   name="captcha"
                   id="captcha"
-                  ref={captchaValue}
                   placeholder="Type Captcha"
                   className="w-full px-4 font-semibold text-sm py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
-                <button
-                  onClick={handleCaptchaMatch}
-                  className="p-3 font-semibold text-white text-center rounded-sm bg-[#D1A054]"
-                >
-                  Match Captcha
-                </button>
               </div>
-              <button
+              <input
+                onBlur={handleCaptchaMatch}
                 disabled={disable}
                 className={`block w-full p-3 font-semibold text-white text-center rounded-sm ${
                   disable ? "bg-gray-500" : " bg-[#D1A054]"
                 }`}
-              >
-                Sign in
-              </button>
+                type="submit"
+                value="Sign in"
+              />
             </form>
             <div className="flex items-center pt-4 space-x-1">
               <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>

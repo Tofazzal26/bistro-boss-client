@@ -1,18 +1,54 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Register.css";
 import registerImg from "../../../public/others/authentication2.png";
+import { useForm } from "react-hook-form";
+import { useContext } from "react";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Register = () => {
-  const handleRegister = (event) => {};
+  const { createUser, updateUserProfile, setProfileLoad } =
+    useContext(AuthContext);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    const name = data.name;
+    const email = data.email;
+    const password = data.password;
+    const photo = data.photo;
+    createUser(email, password)
+      .then((result) => {
+        console.log(result.user);
+        updateUserProfile(name, photo)
+          .then(() => {
+            setProfileLoad(true);
+            navigate(location?.state ? location.state : "/");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="registerImg">
       <div className="lg:px-[100px] lg:py-[100px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 justify-center items-center">
           <div className="w-full p-8 space-y-3 rounded-xl">
-            <h1 className="text-3xl font-bold text-center">Login</h1>
+            <h1 className="text-3xl font-bold text-center">Sign Up</h1>
             <form
-              onSubmit={handleRegister}
+              onSubmit={handleSubmit(onSubmit)}
               noValidate=""
               action=""
               className="space-y-6"
@@ -29,8 +65,31 @@ const Register = () => {
                   name="name"
                   id="name"
                   placeholder="Username"
+                  {...register("name", { required: true })}
                   className="w-full px-4 py-3 font-semibold text-sm rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
+                {errors.name && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
+              <div className="space-y-2 text-sm">
+                <label
+                  htmlFor="username"
+                  className="block text-black font-semibold text-base"
+                >
+                  Photo URL
+                </label>
+                <input
+                  type="text"
+                  name="photo"
+                  id="name"
+                  placeholder="Photo URL"
+                  {...register("photo", { required: true })}
+                  className="w-full px-4 py-3 font-semibold text-sm rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+                />
+                {errors.photo && (
+                  <span className="text-red-500">This field is required</span>
+                )}
               </div>
               <div className="space-y-2 text-sm">
                 <label
@@ -43,9 +102,13 @@ const Register = () => {
                   type="email"
                   name="email"
                   id="username"
+                  {...register("email", { required: true })}
                   placeholder="Email"
                   className="w-full px-4 py-3 font-semibold text-sm rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
+                {errors.email && (
+                  <span className="text-red-500">This field is required</span>
+                )}
               </div>
 
               <div className="space-y-2 text-sm">
@@ -59,9 +122,17 @@ const Register = () => {
                   type="password"
                   name="password"
                   id="password"
+                  {...register("password", {
+                    required: true,
+                    maxLength: 20,
+                    minLength: 6,
+                  })}
                   placeholder="Password"
                   className="w-full px-4 font-semibold text-sm py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
+                {errors.password && (
+                  <span className="text-red-500">This field is required</span>
+                )}
               </div>
 
               <button

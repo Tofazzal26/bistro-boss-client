@@ -1,6 +1,21 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
+import toast from "react-hot-toast";
 
 const NavBar = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut()
+      .then((result) => {
+        toast.success("Logout Successful");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const navLinks = (
     <>
       <li className="">
@@ -53,26 +68,6 @@ const NavBar = () => {
           Our Shop
         </NavLink>
       </li>
-      <li className="">
-        <NavLink
-          to="/login"
-          className={({ isActive }) =>
-            isActive ? "text-[#EEFF25]" : "text-white"
-          }
-        >
-          Login
-        </NavLink>
-      </li>
-      <li className="">
-        <NavLink
-          to="/register"
-          className={({ isActive }) =>
-            isActive ? "text-[#EEFF25]" : "text-white"
-          }
-        >
-          Sign Up
-        </NavLink>
-      </li>
     </>
   );
 
@@ -112,7 +107,44 @@ const NavBar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <div className="avatar">
+                <div className="w-12 rounded-full">
+                  <img src={user?.photoURL} />
+                </div>
+              </div>
+              <button
+                onClick={handleLogOut}
+                className="text-white font-semibold text-[18px]"
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <div className="space-x-4">
+              <button className="font-semibold text-[18px]">
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive ? "text-[#EEFF25]" : "text-white"
+                  }
+                >
+                  Login
+                </NavLink>
+              </button>
+              <button className="font-semibold text-[18px] ">
+                <NavLink
+                  to="/register"
+                  className={({ isActive }) =>
+                    isActive ? "text-[#EEFF25]" : "text-white"
+                  }
+                >
+                  Sign Up
+                </NavLink>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
