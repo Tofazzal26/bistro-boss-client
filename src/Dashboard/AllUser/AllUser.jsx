@@ -1,18 +1,60 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import SectionTitle from "../../Shared/SectionTitle/SectionTitle";
 import useAxiosSecure from "../../hooks/AxiosSecure/useAxiosSecure";
 import AllUserTable from "./AllUserTable/AllUserTable";
+import Swal from "sweetalert2";
 
 const AllUser = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: users = [] } = useQuery({
+  const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users`);
       return res.data;
     },
   });
+
+  const handleUserAdmin = (admin) => {
+    axiosSecure.patch(`/users/admin/${admin._id}`).then((res) => {
+      console.log(res.data);
+      if (res.data.modifiedCount > 0) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your work has been saved",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  };
+
+  const handleDeleteUser = (user) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/users/${user._id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Item has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
 
   return (
     <div>
@@ -50,6 +92,8 @@ const AllUser = () => {
                         key={allUser._id}
                         allUser={allUser}
                         index={index}
+                        handleDeleteUser={handleDeleteUser}
+                        handleUserAdmin={handleUserAdmin}
                       />
                     ))}
                   </tbody>

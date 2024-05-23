@@ -5,9 +5,10 @@ import { TfiMenuAlt } from "react-icons/tfi";
 import { FaBook } from "react-icons/fa";
 import { HiUserGroup } from "react-icons/hi2";
 import { IoCartSharp } from "react-icons/io5";
+import useAdmin from "../hooks/useAdmin/useAdmin";
 
 const Dashboard = () => {
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
 
   return (
     <div className="flex">
@@ -19,38 +20,78 @@ const Dashboard = () => {
           </div>
           <div>
             <ul className="menu space-y-2">
-              <li className="font-semibold text-[16px]">
-                <NavLink to="/dashboard/admin">
-                  <FaHome size={20} /> Admin Home
-                </NavLink>
-              </li>
-              <li className="font-semibold text-[16px]">
-                <NavLink to="/dashboard/cart">
-                  <IoCartSharp size={20} />
-                  My Cart
-                </NavLink>
-              </li>
-              <li className="font-semibold text-[16px]">
-                <NavLink to="/dashboard/items">
-                  <TbToolsKitchen3 size={20} /> Add Items
-                </NavLink>
-              </li>
-              <li className="font-semibold text-[16px]">
-                <NavLink to="/dashboard/manage">
-                  <TfiMenuAlt size={20} /> Manage Items
-                </NavLink>
-              </li>
-              <li className="font-semibold text-[16px]">
-                <NavLink to="/dashboard/booking">
-                  <FaBook size={20} />
-                  Manage Bookings
-                </NavLink>
-              </li>
-              <li className="font-semibold text-[16px]">
-                <NavLink to="/dashboard/allUser">
-                  <HiUserGroup size={20} /> All Users
-                </NavLink>
-              </li>
+              {isAdmin ? (
+                <>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/admin">
+                      <FaHome size={20} /> Admin Home
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/cart">
+                      <IoCartSharp size={20} />
+                      My Cart
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/items">
+                      <TbToolsKitchen3 size={20} /> Add Items
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/manage">
+                      <TfiMenuAlt size={20} /> Manage Items
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/booking">
+                      <FaBook size={20} />
+                      Manage Bookings
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/allUser">
+                      <HiUserGroup size={20} /> All Users
+                    </NavLink>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/userHome">
+                      <FaHome size={20} /> User Home
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/cart">
+                      <IoCartSharp size={20} />
+                      My Cart
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/reservation">
+                      <TbToolsKitchen3 size={20} /> reservation
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/payment">
+                      <TfiMenuAlt size={20} /> payment history
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/review">
+                      <FaBook size={20} />
+                      Add review
+                    </NavLink>
+                  </li>
+                  <li className="font-semibold text-[16px]">
+                    <NavLink to="/dashboard/myBooking">
+                      <HiUserGroup size={20} />
+                      My Booking
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
           {/* main menu site */}

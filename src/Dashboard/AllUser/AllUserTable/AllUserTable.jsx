@@ -1,7 +1,12 @@
 import { HiUserGroup } from "react-icons/hi2";
 import { MdDeleteForever } from "react-icons/md";
 
-const AllUserTable = ({ allUser, index }) => {
+const AllUserTable = ({
+  allUser,
+  index,
+  handleDeleteUser,
+  handleUserAdmin,
+}) => {
   const { name, email } = allUser;
 
   return (
@@ -11,12 +16,22 @@ const AllUserTable = ({ allUser, index }) => {
         <td>{name}</td>
         <td>{email}</td>
         <td>
-          <button className="py-2 px-4 text-white bg-[#D1A054] rounded-md">
-            <HiUserGroup size={20} />
-          </button>
+          {allUser?.role === "Admin" ? (
+            "Admin"
+          ) : (
+            <button
+              onClick={() => handleUserAdmin(allUser)}
+              className="py-2 px-4 text-white bg-[#D1A054] rounded-md"
+            >
+              <HiUserGroup size={20} />
+            </button>
+          )}
         </td>
         <td>
-          <button className="py-2 px-4 text-white bg-red-500 rounded-md">
+          <button
+            onClick={() => handleDeleteUser(allUser)}
+            className="py-2 px-4 text-white bg-red-500 rounded-md"
+          >
             <MdDeleteForever size={22} />
           </button>
         </td>
