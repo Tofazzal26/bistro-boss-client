@@ -6,6 +6,9 @@ import Menu from "../../Pages/Menu/Menu";
 import OurShop from "../../Pages/OurShop/OurShop";
 import Login from "../../Pages/Login/Login";
 import Register from "../../Pages/Register/Register";
+import Dashboard from "../../Dashboard/Dashboard";
+import Cart from "../../Layouts/Cart/Cart";
+import AllUser from "../../Dashboard/AllUser/AllUser";
 
 const Router = createBrowserRouter([
   {
@@ -31,6 +34,20 @@ const Router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/dashboard/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/dashboard/allUser",
+        element: <AllUser />,
       },
     ],
   },

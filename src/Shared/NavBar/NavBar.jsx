@@ -2,9 +2,13 @@ import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import { IoCartSharp } from "react-icons/io5";
+import useCart from "../../hooks/useCart/useCart";
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
+
+  const [cart] = useCart();
 
   const handleLogOut = () => {
     logOut()
@@ -66,6 +70,20 @@ const NavBar = () => {
           }
         >
           Our Shop
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink
+          to="/dashboard/cart"
+          className={({ isActive }) =>
+            isActive ? "text-[#EEFF25]" : "text-white"
+          }
+        >
+          <button className="flex items-center gap-2">
+            <IoCartSharp size={22} />
+            <div className="badge badge-secondary">+{cart.length}</div>
+          </button>
         </NavLink>
       </li>
     </>

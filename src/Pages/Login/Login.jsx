@@ -11,12 +11,18 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Login = () => {
-  const { logInEmailPassword, setNotLoading } = useContext(AuthContext);
+  const { logInEmailPassword, setNotLoading, googleLogin } =
+    useContext(AuthContext);
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const axiosPublic = useAxiosPublic();
+
+  const from = location.state?.from?.pathname || "/";
 
   const [disable, setDisable] = useState(true);
 
@@ -24,9 +30,26 @@ const Login = () => {
     loadCaptchaEnginge(6);
   }, []);
 
+  const handleGoogle = () => {
+    googleLogin()
+      .then((result) => {
+        const userInfo = {
+          name: result.user?.displayName,
+          email: result.user?.email,
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          console.log(res.data);
+        });
+        navigate(from);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleCaptchaMatch = (e) => {
-    const user_captcha_value = e.target.captcha.value;
-    console.log(user_captcha_value);
+    const user_captcha_value = e.target.value;
+    console.log("Hello", user_captcha_value);
     if (validateCaptcha(user_captcha_value)) {
       setDisable(false);
     } else {
@@ -48,7 +71,8 @@ const Login = () => {
     logInEmailPassword(email, password)
       .then((result) => {
         toast.success("Login Successfully");
-        navigate(location?.state ? location.state : "/");
+        // navigate(location?.state ? location.state : "/");
+        navigate(from);
       })
       .catch((error) => {
         toast.error("Please enter a valid email & password");
@@ -119,13 +143,13 @@ const Login = () => {
                 <input
                   type="text"
                   name="captcha"
+                  onBlur={handleCaptchaMatch}
                   id="captcha"
                   placeholder="Type Captcha"
                   className="w-full px-4 font-semibold text-sm py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
                 />
               </div>
               <input
-                onBlur={handleCaptchaMatch}
                 disabled={disable}
                 className={`block w-full p-3 font-semibold text-white text-center rounded-sm ${
                   disable ? "bg-gray-500" : " bg-[#D1A054]"
@@ -143,6 +167,7 @@ const Login = () => {
             </div>
             <div className="flex justify-center space-x-4">
               <button
+                onClick={handleGoogle}
                 aria-label="Log in with Google"
                 className="p-3 rounded-sm"
               >

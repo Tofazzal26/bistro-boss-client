@@ -4,13 +4,19 @@ import registerImg from "../../../public/others/authentication2.png";
 import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import axios from "axios";
 
 const Register = () => {
-  const { createUser, updateUserProfile, setProfileLoad } =
+  const { createUser, updateUserProfile, setProfileLoad, user, googleLogin } =
     useContext(AuthContext);
+
+  const axiosPublic = useAxiosPublic();
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -24,13 +30,22 @@ const Register = () => {
     const email = data.email;
     const password = data.password;
     const photo = data.photo;
+
     createUser(email, password)
       .then((result) => {
-        console.log(result.user);
         updateUserProfile(name, photo)
           .then(() => {
-            setProfileLoad(true);
-            navigate(location?.state ? location.state : "/");
+            const userInfo = {
+              name: data.name,
+              email: data.email,
+            };
+            axiosPublic.post(`/users`, userInfo).then((res) => {
+              console.log(res.data);
+              if (res.data.insertedId) {
+                setProfileLoad(true);
+                navigate(location?.state ? location.state : "/");
+              }
+            });
           })
           .catch((error) => {
             console.log(error);
@@ -38,6 +53,23 @@ const Register = () => {
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+
+  const handleGoogle = () => {
+    googleLogin()
+      .then((result) => {
+        const userInfo = {
+          name: result.user?.displayName,
+          email: result.user?.email,
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          console.log(res.data);
+        });
+        navigate(from);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -150,6 +182,7 @@ const Register = () => {
             </div>
             <div className="flex justify-center space-x-4">
               <button
+                onClick={handleGoogle}
                 aria-label="Log in with Google"
                 className="p-3 rounded-sm"
               >
