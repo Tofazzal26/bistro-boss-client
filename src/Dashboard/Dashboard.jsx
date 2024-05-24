@@ -34,7 +34,7 @@ const Dashboard = () => {
                     </NavLink>
                   </li>
                   <li className="font-semibold text-[16px]">
-                    <NavLink to="/dashboard/items">
+                    <NavLink to="/dashboard/addItems">
                       <TbToolsKitchen3 size={20} /> Add Items
                     </NavLink>
                   </li>
