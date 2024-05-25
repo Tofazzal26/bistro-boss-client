@@ -8,8 +8,6 @@ const ManageAllItems = () => {
   const axiosSecure = useAxiosSecure();
 
   const handleItemDelete = (id) => {
-    console.log(id);
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -28,13 +26,12 @@ const ManageAllItems = () => {
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
-            icon: "Success",
+            icon: "success",
           });
         }
       }
     });
   };
-
   return (
     <div>
       <div className="my-10">

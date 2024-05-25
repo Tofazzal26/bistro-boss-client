@@ -1,5 +1,6 @@
 import { LuPenSquare } from "react-icons/lu";
 import { MdDeleteForever } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const ManageTable = ({ manageItem, index, handleItemDelete }) => {
   const { image, name, price, _id } = manageItem;
@@ -20,9 +21,11 @@ const ManageTable = ({ manageItem, index, handleItemDelete }) => {
         <td className="text-[16px] font-semibold">{name}</td>
         <td className="text-[16px] font-semibold">${price}</td>
         <td>
-          <button className="py-2 px-4 text-white bg-[#D1A054] rounded-md">
-            <LuPenSquare size={20} />
-          </button>
+          <Link to={`/dashboard/ManageItemUpdate/${_id}`}>
+            <button className="py-2 px-4 text-white bg-[#D1A054] rounded-md">
+              <LuPenSquare size={20} />
+            </button>
+          </Link>
         </td>
         <th>
           <button

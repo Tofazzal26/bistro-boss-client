@@ -12,6 +12,7 @@ import AllUser from "../../Dashboard/AllUser/AllUser";
 import AdminPrivate from "../../Components/AdminPrivate/AdminPrivate";
 import AddItems from "../../Dashboard/AddItems/AddItems";
 import ManageAllItems from "../../Dashboard/ManageAllItems/ManageAllItems";
+import ManageItemUpdate from "../../Dashboard/ManageItemUpdate/ManageItemUpdate";
 
 const Router = createBrowserRouter([
   {
@@ -67,6 +68,12 @@ const Router = createBrowserRouter([
       {
         path: "/dashboard/ManageAllItems",
         element: <ManageAllItems />,
+      },
+      {
+        path: "/dashboard/ManageItemUpdate/:id",
+        element: <ManageItemUpdate />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:4000/menu/${params.id}`),
       },
     ],
   },
