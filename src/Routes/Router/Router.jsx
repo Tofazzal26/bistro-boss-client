@@ -11,6 +11,7 @@ import Cart from "../../Layouts/Cart/Cart";
 import AllUser from "../../Dashboard/AllUser/AllUser";
 import AdminPrivate from "../../Components/AdminPrivate/AdminPrivate";
 import AddItems from "../../Dashboard/AddItems/AddItems";
+import ManageAllItems from "../../Dashboard/ManageAllItems/ManageAllItems";
 
 const Router = createBrowserRouter([
   {
@@ -57,7 +58,15 @@ const Router = createBrowserRouter([
       },
       {
         path: "/dashboard/addItems",
-        element: <AddItems />,
+        element: (
+          <AdminPrivate>
+            <AddItems />
+          </AdminPrivate>
+        ),
+      },
+      {
+        path: "/dashboard/ManageAllItems",
+        element: <ManageAllItems />,
       },
     ],
   },

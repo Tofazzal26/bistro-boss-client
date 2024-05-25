@@ -1,22 +1,61 @@
 import { useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
 import SectionTitle from "../../Shared/SectionTitle/SectionTitle";
 import { TbToolsKitchen3 } from "react-icons/tb";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import useAxiosSecure from "../../hooks/AxiosSecure/useAxiosSecure";
+import Swal from "sweetalert2";
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddItems = () => {
+  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
+
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const name = data.name;
     const category = data.category;
     const price = data.price;
     const details = data.details;
-    console.log(name, category, price, details);
+    const image = data.image[0];
+    const formData = new FormData();
+    formData.append(`image`, image);
+
+    const res = await axiosPublic.post(image_hosting_api, formData, {
+      headers: {
+        "content-type": "multipart/from-data",
+      },
+    });
+
+    if (res.data.success) {
+      const ItemMenu = {
+        name: name,
+        recipe: details,
+        price: price,
+        image: res.data.data.display_url,
+        category: category,
+      };
+      const item = await axiosSecure.post(`/menu`, ItemMenu);
+      if (item.data.insertedId) {
+        reset();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your work has been saved",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      console.log(item.data);
+    }
   };
 
   return (
@@ -64,18 +103,20 @@ const AddItems = () => {
                     Category
                   </label>
                   <select
+                    defaultValue={"default"}
                     {...register("category", { required: true })}
+                    required
                     name="category"
                     className="select select-bordered border-none text-gray-600 bg-[#f9fafb] font-semibold text-base w-full"
                   >
-                    <option disabled selected>
+                    <option disabled value={"default"}>
                       Category
                     </option>
-                    <option value={"Salad"}>Salad</option>
-                    <option value={"Pizza"}>Pizza</option>
-                    <option value={"Soup"}>Soup</option>
-                    <option value={"Dessert"}>Dessert</option>
-                    <option value={"Drinks"}>Drinks</option>
+                    <option value={"salad"}>salad</option>
+                    <option value={"pizza"}>pizza</option>
+                    <option value={"soup"}>soup</option>
+                    <option value={"dessert"}>dessert</option>
+                    <option value={"drinks"}>drinks</option>
                   </select>
                 </div>
                 <div>
@@ -87,9 +128,8 @@ const AddItems = () => {
                       Price
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       name="price"
-                      id="npriceame"
                       placeholder="Price"
                       {...register("price", { required: true })}
                       className="w-full px-4 py-3 font-semibold text-sm rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
@@ -110,6 +150,16 @@ const AddItems = () => {
               {errors.details && (
                 <span className="text-red-500">This field is required</span>
               )}
+              <div>
+                <input
+                  {...register("image", { required: true })}
+                  type="file"
+                  className="file-input w-full max-w-xs"
+                />
+                {errors.file && (
+                  <span className="text-red-500">This field is required</span>
+                )}
+              </div>
               <button className="bg-[#b07e2f] px-6 py-3 flex items-center gap-2 text-white font-semibold">
                 Add Item <TbToolsKitchen3 size={20} />
               </button>

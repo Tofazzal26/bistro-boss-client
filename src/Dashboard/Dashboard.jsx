@@ -39,7 +39,7 @@ const Dashboard = () => {
                     </NavLink>
                   </li>
                   <li className="font-semibold text-[16px]">
-                    <NavLink to="/dashboard/manage">
+                    <NavLink to="/dashboard/ManageAllItems">
                       <TfiMenuAlt size={20} /> Manage Items
                     </NavLink>
                   </li>
