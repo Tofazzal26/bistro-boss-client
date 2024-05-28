@@ -23,7 +23,7 @@ const Dashboard = () => {
               {isAdmin ? (
                 <>
                   <li className="font-semibold text-[16px]">
-                    <NavLink to="/dashboard/admin">
+                    <NavLink to="/dashboard/adminHome">
                       <FaHome size={20} /> Admin Home
                     </NavLink>
                   </li>
@@ -74,8 +74,8 @@ const Dashboard = () => {
                     </NavLink>
                   </li>
                   <li className="font-semibold text-[16px]">
-                    <NavLink to="/dashboard/payment">
-                      <TfiMenuAlt size={20} /> payment history
+                    <NavLink to="/dashboard/payment_history">
+                      <TfiMenuAlt size={20} /> Payment history
                     </NavLink>
                   </li>
                   <li className="font-semibold text-[16px]">

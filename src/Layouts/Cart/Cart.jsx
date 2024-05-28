@@ -2,12 +2,13 @@ import React from "react";
 import useCart from "../../hooks/useCart/useCart";
 import SectionTitle from "./../../Shared/SectionTitle/SectionTitle";
 import TableCart from "../../Components/TableCart/TableCart";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [cart, refetch] = useCart();
 
   const totalPrice = cart.reduce(
-    (item, currentPrice) => item + currentPrice.price,
+    (item, currentPrice) => parseInt(item) + parseInt(currentPrice.price),
     0
   );
 
@@ -26,6 +27,20 @@ const Cart = () => {
             <h2 className="font-semibold text-2xl uppercase">
               Total Price: ${totalPrice}
             </h2>
+            {cart.length ? (
+              <Link to="/dashboard/payment">
+                <button className="py-2 px-6 bg-[#d1a054] rounded-md font-semibold text-white">
+                  Pay
+                </button>
+              </Link>
+            ) : (
+              <button
+                disabled
+                className="py-2 px-6 bg-[#d1a054] rounded-md font-semibold text-white"
+              >
+                Pay
+              </button>
+            )}
           </div>
 
           <div>
